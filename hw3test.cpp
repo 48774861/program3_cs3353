@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
 
@@ -33,7 +34,8 @@ int main(int argc, char** argv)
   int n;
    
 
-  ifstream ifile(argv[1]);
+  //ifstream ifile(argv[1]);
+  ifstream ifile("../hw3data.txt");
   vector<pair<float, float> > applicants;
 
   ifile >> n;
@@ -46,7 +48,12 @@ int main(int argc, char** argv)
 	   applicants.push_back(make_pair(p, q));
 	}
 
+  auto start1 = chrono::high_resolution_clock::now();
   vector<int> sol = naiveBestApplicants(applicants);
+  auto end1 = chrono::high_resolution_clock::now();
+  auto elapsed1 = chrono::duration_cast<chrono::microseconds>(end1 - start1);
+  cout << "Time Duration of Naive Algorithm: " << elapsed1.count() << "\n";
+
 
   sort(sol.begin(), sol.end());
   cout << "Solution for Naive : ";
@@ -54,7 +61,11 @@ int main(int argc, char** argv)
 	cout << sol[i] << " ";
   cout << endl;
 
+  auto start2 = chrono::high_resolution_clock::now();
   vector<int> sol2 = BestApplicants(applicants);
+  auto end2 = chrono::high_resolution_clock::now();
+  auto elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
+  cout << "Time Duration of Recursive Algorithm: " << elapsed2.count() << "\n";
 
   sort(sol.begin(), sol.end());
   cout << "Solution for Recursive : ";
