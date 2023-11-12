@@ -35,7 +35,7 @@ int main(int argc, char** argv)
    
 
   //ifstream ifile(argv[1]);
-  ifstream ifile("../hw3data.txt");
+  ifstream ifile("../data_50.txt");
   vector<pair<float, float> > applicants;
 
   ifile >> n;
@@ -48,6 +48,18 @@ int main(int argc, char** argv)
 	   applicants.push_back(make_pair(p, q));
 	}
 
+  auto start2 = chrono::high_resolution_clock::now();
+  vector<int> sol2 = BestApplicants(applicants);
+  auto end2 = chrono::high_resolution_clock::now();
+  auto elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
+  cout << "Time Duration of Recursive Algorithm: " << elapsed2.count() << "\n";
+
+  sort(sol2.begin(), sol2.end());
+  cout << "Solution for Recursive : ";
+  for (int i = 0; i < sol2.size(); i++)
+	cout << sol2[i] << " ";
+  cout << endl;
+
   auto start1 = chrono::high_resolution_clock::now();
   vector<int> sol = naiveBestApplicants(applicants);
   auto end1 = chrono::high_resolution_clock::now();
@@ -59,18 +71,6 @@ int main(int argc, char** argv)
   cout << "Solution for Naive : ";
   for (int i = 0; i < sol.size(); i++)
 	cout << sol[i] << " ";
-  cout << endl;
-
-  auto start2 = chrono::high_resolution_clock::now();
-  vector<int> sol2 = BestApplicants(applicants);
-  auto end2 = chrono::high_resolution_clock::now();
-  auto elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
-  cout << "Time Duration of Recursive Algorithm: " << elapsed2.count() << "\n";
-
-  sort(sol.begin(), sol.end());
-  cout << "Solution for Recursive : ";
-  for (int i = 0; i < sol2.size(); i++)
-	cout << sol2[i] << " ";
   cout << endl;
 
   return 0;
