@@ -35,7 +35,7 @@ int main(int argc, char** argv)
    
 
   //ifstream ifile(argv[1]);
-  ifstream ifile("../data_50.txt");
+  ifstream ifile("../data_1000.txt");
   vector<pair<float, float> > applicants;
 
   ifile >> n;
