@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <stack>
 #include <chrono> // Remove Later
 
 using namespace std;
@@ -40,7 +41,10 @@ int partition(vector<int>& arr, const vector<pair<float, float> >& applicants, i
  
     // Giving pivot element its correct position
     int pivotIndex = start + count;
-    swap(arr[pivotIndex], arr[start]);
+
+    int temp = arr[pivotIndex];
+    arr[pivotIndex] = arr[start];
+    arr[start] = temp;
  
     // Sorting left and right parts of the pivot element
     int i = start, j = end;
@@ -56,7 +60,11 @@ int partition(vector<int>& arr, const vector<pair<float, float> >& applicants, i
         }
  
         if (i < pivotIndex && j > pivotIndex) {
-            swap(arr[i++], arr[j--]);
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
         }
     }
  
@@ -71,14 +79,24 @@ void quickSort(vector<int>& arr, const vector<pair<float, float> >& applicants, 
         return;
  
     // partitioning the array
+    // auto start2 = chrono::high_resolution_clock::now();
+    // Partitioning on its own takes a very short time.
     int p = partition(arr, applicants, start, end);
+    // auto end2 = chrono::high_resolution_clock::now();
+    // auto elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
+    // cout << "Time Duration of Partitioning " << start << " to " << end << ": " << elapsed2.count() << "\n";
  
     // Sorting the left part
+    // start2 = chrono::high_resolution_clock::now();
     quickSort(arr, applicants, start, p - 1);
+//     end2 = chrono::high_resolution_clock::now();
+//   elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
+//   cout << "Time Duration of in-Sorting " << start << " to " << end << ": " << elapsed2.count() << "\n";
  
     // Sorting the right part
     quickSort(arr, applicants, p + 1, end);
 }
+
 
 int recursiveBestApplicant(
       const vector<pair<float, float> >& applicants,
@@ -93,7 +111,17 @@ int recursiveBestApplicant(
 	int index_best_category2 = recursiveBestApplicant(applicants, indices, eligible, mid + 1, last);
 	for(int temp = mid; temp >= first; temp--) {
 		int i = indices.at(temp);
-		if(applicants.at(i).second < applicants.at(index_best_category2).second) {
+		// if(applicants.at(i).second < applicants.at(index_best_category2).second) {
+        //  // std::cout << "Comparing index " << i << " and " << index_best_category2 << "\n";
+        //  // std::cout << applicants.at(i).second << " < " << applicants.at(index_best_category2).second << "\n";
+		// 	if(applicants.at(i).first == applicants.at(index_best_category2).first) {
+		// 		eligible.back() = i;
+		// 	} else {
+		// 		eligible.push_back(i);
+		// 	}
+		// 	index_best_category2 = i;
+		// }
+        if(applicants.at(i).second < applicants.at(index_best_category2).second) {
          // std::cout << "Comparing index " << i << " and " << index_best_category2 << "\n";
          // std::cout << applicants.at(i).second << " < " << applicants.at(index_best_category2).second << "\n";
 			if(applicants.at(i).first == applicants.at(index_best_category2).first) {
@@ -102,6 +130,13 @@ int recursiveBestApplicant(
 				eligible.push_back(i);
 			}
 			index_best_category2 = i;
+            continue;
+		}
+        if(applicants.at(i).second == applicants.at(index_best_category2).second && applicants.at(i).first == applicants.at(index_best_category2).first) {
+         // std::cout << "Comparing index " << i << " and " << index_best_category2 << "\n";
+         // std::cout << applicants.at(i).second << " < " << applicants.at(index_best_category2).second << "\n";
+			eligible.push_back(i);
+			index_best_category2 = i;
 		}
 	}
 	return index_best_category2;
@@ -109,32 +144,65 @@ int recursiveBestApplicant(
 
 vector<int> BestApplicants(const vector<pair<float, float> >& applicants)
 {
-   // 73 in total before
-   auto start2 = chrono::high_resolution_clock::now();
+    vector<int> finalSolution;
+    auto start2 = chrono::high_resolution_clock::now();
+
+    // Finding the Max is faster than the Recursion itself!
+    int index_bestwpm = 0;
+    int index_bestipm = 0;
+    auto best_wpm = applicants.at(index_bestwpm);
+    auto best_ipm = applicants.at(index_bestipm);
+	
+	// First value is WPM, second value is IPM.
+	for(int i = 1; i < applicants.size(); i++) {
+		auto& current = applicants.at(i);
+        
+		// Chooses the best wpm, or if equal wpms, which one has the better ipm.
+		if(current.first > best_wpm.first || (current.first == best_wpm.first && current.second < best_wpm.second)) {
+			index_bestwpm = i;
+            best_wpm = applicants.at(index_bestwpm);
+		}
+		// Chooses the best ipm or, if equal ipms, which one has the better wpm.
+		if(current.second < best_ipm.second || (current.second == best_ipm.second && current.first > best_ipm.first)) {
+			index_bestipm = i;
+            best_ipm = applicants.at(index_bestipm);
+		}
+	}
+    auto end2 = chrono::high_resolution_clock::now();
+  auto elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
+  cout << "Best WPM is at index " << index_bestwpm << " at " << best_wpm.first << "\n";
+  cout << "Best IPM is at index " << index_bestipm << " at " << best_ipm.second << "\n";
+  cout << "Time Duration of Finding Max: " << elapsed2.count() << "\n";
+   
+
+    start2 = chrono::high_resolution_clock::now();
    //vector< pair<float, int> > indices;
    vector<int> indices;
 	for(int i = 0; i < applicants.size(); i++) {
 		//indices.push_back(pair<float, int>(applicants.at(i).first, i));
-      indices.push_back(i);
+        if(applicants.at(i).first >= best_ipm.first && applicants.at(i).second <= best_wpm.second)
+            indices.push_back(i);
 	} // O(2n). Indices takes 4 seconds out of 91.
-   auto end2 = chrono::high_resolution_clock::now();
-  auto elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
+   end2 = chrono::high_resolution_clock::now();
+  elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
   cout << "Time Duration of Indices: " << elapsed2.count() << "\n";
 
    start2 = chrono::high_resolution_clock::now();
    // Sorting takes 77 out of the 91 seconds!
 	//sort(indices.begin(), indices.end()); // O(nlogn)
-   quickSort(indices, applicants, 0, indices.size() - 1);
+    //ShellSort(indices, applicants);
+    quickSort(indices, applicants, 0, indices.size() - 1);
+   //indices = mergeSort(indices, applicants);
    end2 = chrono::high_resolution_clock::now();
   elapsed2 = chrono::duration_cast<chrono::microseconds>(end2 - start2);
   cout << "Time Duration of Sorting: " << elapsed2.count() << "\n";
 
-   for(int i = 0; i < indices.size(); i++) {
-      std::cout << "Index: " << indices.at(i) << " " << applicants.at(indices.at(i)).first << " " << applicants.at(indices.at(i)).second << "\n";
-   }
+//    for(int i = 0; i < indices.size(); i++) {
+//       std::cout << "Index: " << indices.at(i) << " " << applicants.at(indices.at(i)).first << " " << applicants.at(indices.at(i)).second << "\n";
+//    }
 
+    start2 = chrono::high_resolution_clock::now();
 	vector<int> eligible;
-   start2 = chrono::high_resolution_clock::now();
    // Takes 2 out of the 91 seconds.
 	int S1 = recursiveBestApplicant(applicants, indices, eligible, 0, indices.size() - 1);
    end2 = chrono::high_resolution_clock::now();
