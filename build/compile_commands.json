@@ -1,13 +1,13 @@
 [
 {
   "directory": "/Users/marcpham/CLionProjects/CS3353/program3_cs3353 /build",
-  "command": "/usr/bin/clang++   -O3 -DNDEBUG -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -Wall -Wextra -pedantic -o CMakeFiles/main.dir/hw3.cpp.o -c \"/Users/marcpham/CLionProjects/CS3353/program3_cs3353 /hw3.cpp\"",
+  "command": "/usr/bin/clang++   -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -Wall -Wextra -pedantic -o CMakeFiles/main.dir/hw3.cpp.o -c \"/Users/marcpham/CLionProjects/CS3353/program3_cs3353 /hw3.cpp\"",
   "file": "/Users/marcpham/CLionProjects/CS3353/program3_cs3353 /hw3.cpp",
   "output": "CMakeFiles/main.dir/hw3.cpp.o"
 },
 {
   "directory": "/Users/marcpham/CLionProjects/CS3353/program3_cs3353 /build",
-  "command": "/usr/bin/clang++   -O3 -DNDEBUG -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -Wall -Wextra -pedantic -o CMakeFiles/main.dir/hw3test.cpp.o -c \"/Users/marcpham/CLionProjects/CS3353/program3_cs3353 /hw3test.cpp\"",
+  "command": "/usr/bin/clang++   -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk -Wall -Wextra -pedantic -o CMakeFiles/main.dir/hw3test.cpp.o -c \"/Users/marcpham/CLionProjects/CS3353/program3_cs3353 /hw3test.cpp\"",
   "file": "/Users/marcpham/CLionProjects/CS3353/program3_cs3353 /hw3test.cpp",
   "output": "CMakeFiles/main.dir/hw3test.cpp.o"
 }
