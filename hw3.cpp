@@ -109,6 +109,7 @@ int recursiveBestApplicant(
 	int mid = (first + last) / 2;
 	// Call for second half.
 	int index_best_category2 = recursiveBestApplicant(applicants, indices, eligible, mid + 1, last);
+    pair<float, float> best = applicants.at(index_best_category2);
 	for(int temp = mid; temp >= first; temp--) {
 		int i = indices.at(temp);
 		// if(applicants.at(i).second < applicants.at(index_best_category2).second) {
@@ -121,23 +122,29 @@ int recursiveBestApplicant(
 		// 	}
 		// 	index_best_category2 = i;
 		// }
-        if(applicants.at(i).second < applicants.at(index_best_category2).second) {
-         // std::cout << "Comparing index " << i << " and " << index_best_category2 << "\n";
-         // std::cout << applicants.at(i).second << " < " << applicants.at(index_best_category2).second << "\n";
-			if(applicants.at(i).first == applicants.at(index_best_category2).first) {
-				eligible.back() = i;
-			} else {
-				eligible.push_back(i);
-			}
-			index_best_category2 = i;
+        if(applicants.at(i).second > best.second && applicants.at(i).first < best.first) {
             continue;
-		}
-        if(applicants.at(i).second == applicants.at(index_best_category2).second && applicants.at(i).first == applicants.at(index_best_category2).first) {
-         // std::cout << "Comparing index " << i << " and " << index_best_category2 << "\n";
-         // std::cout << applicants.at(i).second << " < " << applicants.at(index_best_category2).second << "\n";
-			eligible.push_back(i);
-			index_best_category2 = i;
-		}
+        }
+        index_best_category2 = i;
+        eligible.push_back(i);
+        best = applicants.at(index_best_category2);
+        // if(applicants.at(i).second < applicants.at(index_best_category2).second) {
+        //  // std::cout << "Comparing index " << i << " and " << index_best_category2 << "\n";
+        //  // std::cout << applicants.at(i).second << " < " << applicants.at(index_best_category2).second << "\n";
+		// 	if(applicants.at(i).first == applicants.at(index_best_category2).first) {
+		// 		eligible.back() = i;
+		// 	} else {
+		// 		eligible.push_back(i);
+		// 	}
+		// 	index_best_category2 = i;
+        //     continue;
+		// }
+        // if(applicants.at(i).second == applicants.at(index_best_category2).second && applicants.at(i).first == applicants.at(index_best_category2).first) {
+        //  // std::cout << "Comparing index " << i << " and " << index_best_category2 << "\n";
+        //  // std::cout << applicants.at(i).second << " < " << applicants.at(index_best_category2).second << "\n";
+		// 	eligible.push_back(i);
+		// 	index_best_category2 = i;
+		// }
 	}
 	return index_best_category2;
 }
