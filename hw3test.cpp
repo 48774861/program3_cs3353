@@ -35,7 +35,7 @@ int main(int argc, char** argv)
    
 
   //ifstream ifile(argv[1]);
-  ifstream ifile("../data_1000.txt");
+  ifstream ifile("../mixed_2000.txt");
   vector<pair<float, float> > applicants;
 
   ifile >> n;
@@ -72,6 +72,21 @@ int main(int argc, char** argv)
   for (int i = 0; i < sol.size(); i++)
 	cout << sol[i] << " ";
   cout << endl;
+
+  bool good = true;
+  for(int i = 0; i < sol.size(); i++) {
+    if(sol[i] != sol2[i]) {
+      cout << "Naive Solution has " << sol[i] << " while Recursive has " << sol2[i] << "\n";
+      good = false;
+      break;
+    }
+  }
+  if (good == false) {
+    cout << "Gotta fix something!\n";
+  } else {
+    cout << "The solutions match!\n";
+  }
+
 
   return 0;
 }
